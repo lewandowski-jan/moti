@@ -1,4 +1,4 @@
-package com.example.moti
+package pl.moti
 
 import io.flutter.embedding.android.FlutterActivity
 
