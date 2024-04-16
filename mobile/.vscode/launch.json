@@ -2,10 +2,25 @@
     "version": "0.2.0",
     "configurations": [
       {
-        "name": "Moti",
+        "name": "Moti (dev)",
         "request": "launch",
         "type": "dart",
-        "program": "lib/main.dart",
+        "program": "lib/main_dev.dart",
+        "args": ["--flavor", "dev"],
+      },
+      {
+        "name": "Moti (tst)",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main_tst.dart",
+        "args": ["--flavor", "tst"],
+      },
+      {
+        "name": "Moti (prod)",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main_prod.dart",
+        "args": ["--flavor", "prod"],
       },
     ]
   }
