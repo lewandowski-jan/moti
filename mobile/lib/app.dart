@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moti/features/activities/presentation/activity_screen.dart';
 
 class MtApp extends StatelessWidget {
   const MtApp({super.key});
@@ -6,11 +7,7 @@ class MtApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Moti'),
-        ),
-      ),
+      home: AcitivityScreen(),
     );
   }
 }
