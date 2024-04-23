@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:collection/collection.dart';
 import 'package:moti/features/activities/data/activities_service.dart';
-import 'package:moti/features/activities/data/models/activity.dart';
+import 'package:moti/features/activities/domain/activity_entity.dart';
+import 'package:moti/features/activities/domain/activity_type_value_object.dart';
 
 class ActivitiesRepository {
   final ActivitiesService _service;
@@ -10,53 +11,54 @@ class ActivitiesRepository {
     required ActivitiesService service,
   }) : _service = service;
 
-  Future<void> addActivity(Activity activity) async {
-    final last = getLastActivity(activity.name!);
-    if (last == null) {
-      return _service.addActivity(activity);
+  Future<void> addActivity(ActivityEntity activity) async {
+    final activityType = activity.type;
+    if (!activityType.valid) {
+      return;
     }
-
-    final (key, lastActivity) = last;
-    final lastDate = lastActivity.date;
-    if (lastDate != null) {
-      final now = DateTime.now();
-      final isSameDay = now.year == lastDate.year &&
-          now.month == lastDate.month &&
-          now.day == lastDate.day;
-
-      if (isSameDay) {
-        return updateActivity(
-          key,
-          lastActivity.copyWith(
-            amount: lastActivity.amount! + activity.amount!,
-          ),
-        );
-      }
-
-      return _service.addActivity(activity);
-    }
-  }
-
-  List<(int, Activity)> getAllActivities() {
-    final now = DateTime.now();
-    const year = Duration(days: 365);
 
     final activities = _service.getAllActivities();
+    final lastActivityEntry = activities.entries.firstWhereOrNull(
+      (e) => ActivityEntity.fromModel(e.value).type == activityType,
+    );
+    if (lastActivityEntry == null) {
+      return _service.addActivity(activity.toModel());
+    }
 
-    return activities.entries
-        .where((entry) {
-          return now.difference(entry.value.date!) < year;
-        })
-        .sorted((l, r) => r.value.date!.compareTo(l.value.date!))
-        .map((e) => (e.key, e.value))
-        .toList();
+    final (key, lastActivity) = (
+      lastActivityEntry.key,
+      ActivityEntity.fromModel(lastActivityEntry.value),
+    );
+
+    final lastDate = lastActivity.date;
+    if (!lastDate.valid || !lastDate.isToday) {
+      return _service.addActivity(activity.toModel());
+    }
+
+    return _service.updateActivity(
+      key,
+      (lastActivity + activity).toModel(),
+    );
   }
 
-  (int, Activity)? getLastActivity(String name) {
-    return getAllActivities().firstWhereOrNull((e) => e.$2.name == name);
+  ActivitiesEntity getAllActivities() {
+    final activities = _service.getAllActivities();
+
+    return ActivitiesEntity.fromModel(
+      activities.entries.map((e) => e.value),
+    );
   }
 
-  Future<void> updateActivity(int key, Activity activity) {
-    return _service.updateActivity(key, activity);
+  ActivityEntity getLastActivity(ActivityTypeValueObject type) {
+    final activities = _service.getAllActivities();
+    final lastActivity = activities.values.firstWhereOrNull(
+      (e) => ActivityEntity.fromModel(e).type == type,
+    );
+
+    if (lastActivity == null) {
+      return ActivityEntity.invalid();
+    }
+
+    return ActivityEntity.fromModel(lastActivity);
   }
 }
