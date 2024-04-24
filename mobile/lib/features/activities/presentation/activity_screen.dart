@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:moti/features/activities/application/activities_cubit.dart';
 import 'package:moti/features/activities/presentation/add_activity.dart';
 import 'package:moti/features/activities/presentation/streak.dart';
 import 'package:moti/features/activities/presentation/total.dart';
+import 'package:moti/features/reminders/local_notifications.dart';
 
-class AcitivityScreen extends StatelessWidget {
+class AcitivityScreen extends HookWidget {
   const AcitivityScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    useEffect(
+      () {
+        context.read<LocalNotifications>().requestPermission();
+        return null;
+      },
+      [],
+    );
+
     return BlocProvider(
       create: (context) =>
           ActivitiesCubit(context.read())..fetchActivitiesData(),

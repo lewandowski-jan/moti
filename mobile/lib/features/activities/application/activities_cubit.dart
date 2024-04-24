@@ -17,7 +17,7 @@ class ActivitiesCubit extends Cubit<ActivitiesState> {
 
       final activities = _activitiesRepository.getAllActivities();
 
-      if (!activities.valid) {
+      if (!activities.valid && activities.entities.isNotEmpty) {
         emit(state.copyWith(status: ActivitiesStatus.error));
         return;
       }
