@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_comms/flutter_comms.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 import 'package:moti/features/activities/application/activities_cubit.dart';
 import 'package:moti/features/activities/presentation/add_activity.dart';
 import 'package:moti/features/activities/presentation/streak.dart';
 import 'package:moti/features/activities/presentation/total.dart';
 import 'package:moti/features/reminders/local_notifications.dart';
+import 'package:moti/features/reminders/presentation/motivational_text_generator.dart';
+import 'package:moti/l10n/l10n.dart';
 
 class AcitivityScreen extends HookWidget {
   const AcitivityScreen({super.key});
@@ -20,12 +23,23 @@ class AcitivityScreen extends HookWidget {
       [],
     );
 
+    useMessageListener<ActivitiesMessage>(
+      (message) {
+        if (message == ActivitiesMessage.activityLogged) {
+          context.read<LocalNotifications>().rescheduleNotifications(
+                context.l10n.reminders_reminder_title,
+                () => MotivationalTextGenerator.generate(context),
+              );
+        }
+      },
+    );
+
     return BlocProvider(
       create: (context) =>
           ActivitiesCubit(context.read())..fetchActivitiesData(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Pushups'),
+          title: Text(context.l10n.app_name),
         ),
         body: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
@@ -38,7 +52,7 @@ class AcitivityScreen extends HookWidget {
               }
 
               if (state.status == ActivitiesStatus.error) {
-                return const Center(child: Text('Something went wrong!'));
+                return Center(child: Text(context.l10n.generic_error));
               }
 
               final streak = state.streak;
@@ -50,16 +64,16 @@ class AcitivityScreen extends HookWidget {
               return Column(
                 children: [
                   if (doneToday)
-                    const Text(
-                      'You have already done pushups today, you will carry the logs!',
+                    Text(
+                      context.l10n.activity_screen_pushups_done,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24),
+                      style: const TextStyle(fontSize: 24),
                     )
                   else
-                    const Text(
-                      "You have not done pushups today, who's gonna carry the logs?",
+                    Text(
+                      context.l10n.activity_screen_pushups_not_done,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24),
+                      style: const TextStyle(fontSize: 24),
                     ),
                   const SizedBox(height: 32),
                   Streak(streak: streak, maxStreak: maxStreak),

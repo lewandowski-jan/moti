@@ -1,12 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_comms/flutter_comms.dart';
 
 import 'package:moti/features/activities/domain/activities_repository.dart';
 import 'package:moti/features/activities/domain/activity_entity.dart';
 import 'package:moti/features/activities/domain/activity_type_value_object.dart';
 import 'package:moti/features/common/domain/date_value_object.dart';
 
-class ActivitiesCubit extends Cubit<ActivitiesState> {
+enum ActivitiesMessage { activityLogged }
+
+class ActivitiesCubit extends Cubit<ActivitiesState> with Sender<ActivitiesMessage> {
   ActivitiesCubit(this._activitiesRepository) : super(const ActivitiesState());
 
   final ActivitiesRepository _activitiesRepository;
@@ -59,6 +62,7 @@ class ActivitiesCubit extends Cubit<ActivitiesState> {
   Future<bool> _logActivity(ActivityEntity activity) async {
     try {
       await _activitiesRepository.addActivity(activity);
+      send(ActivitiesMessage.activityLogged);
       await fetchActivitiesData();
       return true;
     } catch (e) {

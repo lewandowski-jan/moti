@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moti/l10n/l10n.dart';
 
 class Total extends StatelessWidget {
   const Total({
@@ -15,18 +16,18 @@ class Total extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          'Total',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        Text(
+          context.l10n.total_total,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Column(
               children: [
-                const Text(
-                  'Today',
-                  style: TextStyle(fontSize: 16),
+                Text(
+                  context.l10n.total_today_total,
+                  style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -38,9 +39,9 @@ class Total extends StatelessWidget {
             const SizedBox(width: 16),
             Column(
               children: [
-                const Text(
-                  'All time',
-                  style: TextStyle(fontSize: 16),
+                Text(
+                  context.l10n.total_all_time_total,
+                  style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 4),
                 Text(
