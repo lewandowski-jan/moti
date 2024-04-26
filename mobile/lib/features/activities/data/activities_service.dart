@@ -10,10 +10,6 @@ class ActivitiesService {
     return _storage.add(activity);
   }
 
-  Future<void> updateActivity(int key, ActivityModel activity) async {
-    return _storage.update(key, activity);
-  }
-
   Map<int, ActivityModel> getAllActivities() {
     return _storage.getAllWithKeys(ActivityModel.fromJson);
   }

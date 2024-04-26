@@ -30,7 +30,9 @@ class ActivitiesEntity extends EntityList<ActivityEntity> {
         .where((e) => e.type == ActivityTypeValueObject.pushups())
         .map((e) => e.amount.amount)
         .where((e) => e.valid)
-        .fold(DoubleValueObject(0), (a, b) => a + b).getOr(0).toInt();
+        .fold(DoubleValueObject(0), (a, b) => a + b)
+        .getOr(0)
+        .toInt();
   }
 
   int get totalPushupRepsToday {
@@ -39,8 +41,9 @@ class ActivitiesEntity extends EntityList<ActivityEntity> {
         .where((e) => e.date.isToday)
         .map((e) => e.amount.amount)
         .where((e) => e.valid)
-        .fold(DoubleValueObject(0), (a, b) => a + b).getOr(0).toInt();
-  
+        .fold(DoubleValueObject(0), (a, b) => a + b)
+        .getOr(0)
+        .toInt();
   }
 }
 

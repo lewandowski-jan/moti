@@ -50,6 +50,7 @@ extension IterableDateValueObjectX on Iterable<DateValueObject> {
 
     final dates = where((e) => e.valid)
         .map((e) => e.value!)
+        .toSet()
         .sorted((a, b) => b.compareTo(a));
 
     final today = DateValueObject.today().value!;
@@ -87,6 +88,7 @@ extension IterableDateValueObjectX on Iterable<DateValueObject> {
 
     final dates = where((e) => e.valid)
         .map((e) => e.value!)
+        .toSet()
         .sorted((a, b) => b.compareTo(a));
 
     for (var i = 0; i < dates.length; i++) {
