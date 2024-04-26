@@ -7,9 +7,10 @@ import 'package:moti/features/activities/domain/activity_entity.dart';
 import 'package:moti/features/activities/domain/activity_type_value_object.dart';
 import 'package:moti/features/common/domain/date_value_object.dart';
 
-enum ActivitiesMessage { activityLogged }
+enum ActivitiesMessage { firstActivityLoggedToday }
 
-class ActivitiesCubit extends Cubit<ActivitiesState> with Sender<ActivitiesMessage> {
+class ActivitiesCubit extends Cubit<ActivitiesState>
+    with Sender<ActivitiesMessage> {
   ActivitiesCubit(this._activitiesRepository) : super(const ActivitiesState());
 
   final ActivitiesRepository _activitiesRepository;
@@ -62,7 +63,11 @@ class ActivitiesCubit extends Cubit<ActivitiesState> with Sender<ActivitiesMessa
   Future<bool> _logActivity(ActivityEntity activity) async {
     try {
       await _activitiesRepository.addActivity(activity);
-      send(ActivitiesMessage.activityLogged);
+
+      if (!state.doneToday) {
+        send(ActivitiesMessage.firstActivityLoggedToday);
+      }
+      
       await fetchActivitiesData();
       return true;
     } catch (e) {

@@ -25,7 +25,7 @@ class AcitivityScreen extends HookWidget {
 
     useMessageListener<ActivitiesMessage>(
       (message) {
-        if (message == ActivitiesMessage.activityLogged) {
+        if (message == ActivitiesMessage.firstActivityLoggedToday) {
           context.read<LocalNotifications>().rescheduleNotifications(
                 context.l10n.reminders_reminder_title,
                 () => MotivationalTextGenerator.generate(context),
