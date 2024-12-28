@@ -1,7 +1,8 @@
 import 'package:moti/architecture/domain/value_object_base.dart';
 
-abstract class EnumValueObject<T, R extends Enum> extends ValueObjectBase<R> {
-  EnumValueObject(T? value) {
+abstract class TransformValueObject<T, R extends Object>
+    extends ValueObjectBase<R> {
+  TransformValueObject(T? value) {
     this.value = validate(value);
   }
 

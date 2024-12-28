@@ -47,14 +47,14 @@ class LocalNotifications {
 
     if (Platform.isAndroid) {
       plugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()!
-        .createNotificationChannel(
-          const AndroidNotificationChannel(
-            'moti_reminders_channel',
-            'Moti reminders',
-          ),
-        );
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()!
+          .createNotificationChannel(
+            const AndroidNotificationChannel(
+              'moti_reminders_channel',
+              'Moti reminders',
+            ),
+          );
     }
   }
 
@@ -103,18 +103,21 @@ class LocalNotifications {
     return enableResult && exactResult;
   }
 
-  Future<void> rescheduleNotifications(String title, ValueGetter<String> generator) async {
+  Future<void> rescheduleNotifications(
+    String title,
+    ValueGetter<String> generator,
+  ) async {
     await plugin.cancelAll();
 
     final timezone = await ftz.FlutterTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(timezone));
 
     final notifications = [
+      (generator(), const Duration(hours: 23)),
       (generator(), const Duration(days: 1)),
       (generator(), const Duration(days: 1, hours: 1)),
-      (generator(), const Duration(days: 1, hours: 2)),
+      (generator(), const Duration(hours: 47)),
       (generator(), const Duration(days: 2)),
-      (generator(), const Duration(days: 2, hours: 1)),
       (generator(), const Duration(days: 3)),
     ];
 

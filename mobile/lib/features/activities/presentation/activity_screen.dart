@@ -18,6 +18,7 @@ class AcitivityScreen extends HookWidget {
     useEffect(
       () {
         context.read<LocalNotifications>().requestPermission();
+        context.read<ActivitiesCubit>().fetchActivitiesData();
         return null;
       },
       [],
@@ -34,59 +35,55 @@ class AcitivityScreen extends HookWidget {
       },
     );
 
-    return BlocProvider(
-      create: (context) =>
-          ActivitiesCubit(context.read())..fetchActivitiesData(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(context.l10n.app_name),
-        ),
-        body: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          padding: const EdgeInsets.all(16),
-          child: BlocBuilder<ActivitiesCubit, ActivitiesState>(
-            builder: (context, state) {
-              if (state.status
-                  case ActivitiesStatus.loading || ActivitiesStatus.initial) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              if (state.status == ActivitiesStatus.error) {
-                return Center(child: Text(context.l10n.generic_error));
-              }
-
-              final streak = state.streak;
-              final maxStreak = state.maxStreak;
-              final doneToday = state.doneToday;
-              final totalToday = state.totalToday;
-              final total = state.totalReps;
-
-              return Column(
-                children: [
-                  if (doneToday)
-                    Text(
-                      context.l10n.activity_screen_pushups_done,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 24),
-                    )
-                  else
-                    Text(
-                      context.l10n.activity_screen_pushups_not_done,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                  const SizedBox(height: 32),
-                  Streak(streak: streak, maxStreak: maxStreak),
-                  const SizedBox(height: 16),
-                  Total(totalToday: totalToday, total: total),
-                  const SizedBox(height: 64),
-                  AddActivity(
-                    onAdd: context.read<ActivitiesCubit>().logPushups,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(context.l10n.app_name),
+      ),
+      body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        padding: const EdgeInsets.all(16),
+        child: BlocBuilder<ActivitiesCubit, ActivitiesState>(
+          builder: (context, state) {
+            if (state.status
+                case ActivitiesStatus.loading || ActivitiesStatus.initial) {
+              return const Center(child: CircularProgressIndicator());
+            }
+    
+            if (state.status == ActivitiesStatus.error) {
+              return Center(child: Text(context.l10n.generic_error));
+            }
+    
+            final streak = state.streak;
+            final maxStreak = state.maxStreak;
+            final doneToday = state.doneToday;
+            final totalToday = state.totalToday;
+            final total = state.totalReps;
+    
+            return Column(
+              children: [
+                if (doneToday)
+                  Text(
+                    context.l10n.activity_screen_pushups_done,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 24),
+                  )
+                else
+                  Text(
+                    context.l10n.activity_screen_pushups_not_done,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 24),
                   ),
-                ],
-              );
-            },
-          ),
+                const SizedBox(height: 32),
+                Streak(streak: streak, maxStreak: maxStreak),
+                const SizedBox(height: 16),
+                Total(totalToday: totalToday, total: total),
+                const SizedBox(height: 64),
+                AddActivity(
+                  onAdd: context.read<ActivitiesCubit>().logPushups,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

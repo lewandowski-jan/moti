@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:moti/core/local_storage.dart';
+import 'package:moti/features/activities/application/activities_cubit.dart';
 import 'package:moti/features/activities/data/activities_service.dart';
 import 'package:moti/features/activities/domain/activities_repository.dart';
 import 'package:moti/features/reminders/local_notifications.dart';
@@ -34,6 +36,11 @@ class MtGlobalProviders extends StatelessWidget {
           create: (context) => ActivitiesRepository(
             service: context.read(),
           ),
+        ),
+        BlocProvider<ActivitiesCubit>(
+          create: (context) => ActivitiesCubit(
+            context.read(),
+          )..fetchActivitiesData(),
         ),
       ],
       child: child,

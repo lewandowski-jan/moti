@@ -27,7 +27,7 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
       }
 
       final activityDates = activities.entities
-          .where((e) => e.type.type == ActivityType.pushups)
+          .where((e) => e.type.get == ActivityType.pushups)
           .map((e) => e.date)
           .where((e) => e.valid)
           .toList();

@@ -7,7 +7,7 @@ enum AmountType {
   weight;
 }
 
-class AmountTypeValueObject extends EnumValueObject<String, AmountType> {
+class AmountTypeValueObject extends TransformValueObject<String, AmountType> {
   AmountTypeValueObject(super.value);
 
   factory AmountTypeValueObject.invalid() => AmountTypeValueObject(null);

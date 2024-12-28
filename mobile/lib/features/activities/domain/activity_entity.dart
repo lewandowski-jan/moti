@@ -84,7 +84,7 @@ class ActivityEntity extends Entity {
 
   ActivityModel toModel() {
     return ActivityModel(
-      name: type.value.toString(),
+      name: type.get.toValue(),
       date: date.value,
       amount: amount.toModel(),
     );
