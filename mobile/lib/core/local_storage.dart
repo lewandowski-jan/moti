@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:moti/core/storable.dart';
+import 'package:moti/architecture/data/model.dart';
 
 typedef FromJson<T> = T Function(Json json);
 typedef Json = Map<dynamic, dynamic>;
@@ -14,7 +14,7 @@ class LocalStorage {
     return LocalStorage._(box: box);
   }
 
-  Future<void> add(IStorable value, [String? key]) async {
+  Future<void> add(Model value, [String? key]) async {
     if (key != null) {
       return _box.put(key, value.toJson());
     }
@@ -37,7 +37,7 @@ class LocalStorage {
     });
   }
 
-  Future<void> update(int key, IStorable value) async {
+  Future<void> update(int key, Model value) async {
     return _box.put(key, value.toJson());
   }
 

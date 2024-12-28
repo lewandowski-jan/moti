@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:moti/l10n/l10n.dart';
 
 class Streak extends StatelessWidget {
   const Streak({
@@ -15,18 +16,18 @@ class Streak extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          'Streak',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        Text(
+          context.l10n.streak_streak,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Column(
               children: [
-                const Text(
-                  'Current',
-                  style: TextStyle(fontSize: 16),
+                Text(
+                  context.l10n.streak_current_streak,
+                  style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -38,9 +39,9 @@ class Streak extends StatelessWidget {
             const SizedBox(width: 16),
             Column(
               children: [
-                const Text(
-                  'Max',
-                  style: TextStyle(fontSize: 16),
+                Text(
+                  context.l10n.streak_longest_streak,
+                  style: const TextStyle(fontSize: 16),
                 ),
                 const SizedBox(height: 4),
                 Text(
