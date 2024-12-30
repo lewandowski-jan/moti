@@ -103,6 +103,10 @@ class LocalNotifications {
     return enableResult && exactResult;
   }
 
+  Future<bool> hasScheduledNotifications() async {
+    return (await plugin.pendingNotificationRequests()).isNotEmpty;
+  }
+
   Future<void> rescheduleNotifications(
     String title,
     ValueGetter<String> generator,

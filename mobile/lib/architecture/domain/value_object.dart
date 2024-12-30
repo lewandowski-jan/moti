@@ -6,7 +6,7 @@ class ValueObject<T extends Object> extends ValueObjectBase<T> {
     this.value = validate(value);
   }
 
-  factory ValueObject.invalid() => ValueObject<T>(null);
+  ValueObject.invalid() : this(null);
 
   @mustBeOverridden
   T? validate(T? value) {

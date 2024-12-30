@@ -27,8 +27,7 @@ class Data<T> {
     }
 
     return error(
-      _error ??
-          AppError.unexpected(ArgumentError('Data and error are null')),
+      _error ?? AppError.unexpected(ArgumentError('Data and error are null')),
     );
   }
 }
