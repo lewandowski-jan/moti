@@ -5,7 +5,7 @@ sealed class AppError implements Error {
   factory AppError.network(Object exception) =>
       AppErrorNetwork(exception: exception);
 
-  factory AppError.unexpected(Object exception) => 
+  factory AppError.unexpected(Object exception) =>
       AppErrorUnexpected(exception: exception);
 
   final String message;

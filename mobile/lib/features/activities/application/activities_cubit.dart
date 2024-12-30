@@ -1,7 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_comms/flutter_comms.dart';
-
 import 'package:moti/features/activities/domain/activities_repository.dart';
 import 'package:moti/features/activities/domain/activity_entity.dart';
 import 'package:moti/features/activities/domain/activity_type_value_object.dart';
@@ -28,12 +28,19 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
 
       final activityDates = activities.entities
           .where((e) => e.type.get == ActivityType.pushups)
-          .map((e) => e.date)
+          .map((e) => e.timestamp.date)
           .where((e) => e.valid)
           .toList();
 
       final today = DateValueObject.today();
       final doneToday = activityDates.contains(today);
+
+      final weekAgo = today - const Duration(days: 7);
+      final lastWeekActivities = activities.entities
+          .where(
+            (e) => e.timestamp.date.isAfter(weekAgo),
+          )
+          .groupListsBy((e) => e.timestamp.date);
 
       final streak = activityDates.currentStreak;
       final maxStreak = activityDates.longestStreak;
@@ -49,6 +56,7 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
           totalReps: totalReps,
           totalToday: totalToday,
           doneToday: doneToday,
+          lastWeekActivities: lastWeekActivities,
         ),
       );
     } catch (e) {
@@ -67,7 +75,7 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
       if (!state.doneToday) {
         send(ActivitiesMessage.firstActivityLoggedToday);
       }
-      
+
       await fetchActivitiesData();
       return true;
     } catch (e) {
@@ -86,6 +94,7 @@ class ActivitiesState extends Equatable {
     this.totalReps = 0,
     this.totalToday = 0,
     this.doneToday = false,
+    this.lastWeekActivities = const {},
   });
 
   final ActivitiesStatus status;
@@ -94,6 +103,7 @@ class ActivitiesState extends Equatable {
   final int totalReps;
   final int totalToday;
   final bool doneToday;
+  final Map<DateValueObject, List<ActivityEntity>> lastWeekActivities;
 
   ActivitiesState copyWith({
     ActivitiesStatus? status,
@@ -102,6 +112,7 @@ class ActivitiesState extends Equatable {
     int? totalReps,
     int? totalToday,
     bool? doneToday,
+    Map<DateValueObject, List<ActivityEntity>>? lastWeekActivities,
   }) {
     return ActivitiesState(
       status: status ?? this.status,
@@ -110,6 +121,7 @@ class ActivitiesState extends Equatable {
       totalReps: totalReps ?? this.totalReps,
       totalToday: totalToday ?? this.totalToday,
       doneToday: doneToday ?? this.doneToday,
+      lastWeekActivities: lastWeekActivities ?? this.lastWeekActivities,
     );
   }
 
@@ -121,5 +133,6 @@ class ActivitiesState extends Equatable {
         totalReps,
         totalToday,
         doneToday,
+        lastWeekActivities,
       ];
 }

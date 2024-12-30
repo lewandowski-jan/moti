@@ -62,7 +62,8 @@ import 'localizations_pl.dart';
 /// be consistent with the languages listed in the AppLocalizations.supportedLocales
 /// property.
 abstract class AppLocalizations {
-  AppLocalizations(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  AppLocalizations(String locale)
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -70,7 +71,8 @@ abstract class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -82,7 +84,8 @@ abstract class AppLocalizations {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
     delegate,
     GlobalMaterialLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -172,6 +175,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All time'**
   String get total_all_time_total;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @settings_theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settings_theme;
+
+  /// No description provided for @theme_system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get theme_system;
+
+  /// No description provided for @theme_light.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get theme_light;
+
+  /// No description provided for @theme_dark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get theme_dark;
+
+  /// No description provided for @settings_language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settings_language;
+
+  /// No description provided for @language_polish.
+  ///
+  /// In en, this message translates to:
+  /// **'Polish'**
+  String get language_polish;
+
+  /// No description provided for @language_english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get language_english;
 
   /// No description provided for @reminders_reminder_title.
   ///
@@ -336,7 +387,8 @@ abstract class AppLocalizations {
   String get reminders_motivation_26;
 }
 
-class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
   const _AppLocalizationsDelegate();
 
   @override
@@ -345,25 +397,25 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'pl'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'pl'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
 }
 
 AppLocalizations lookupAppLocalizations(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return AppLocalizationsEn();
-    case 'pl': return AppLocalizationsPl();
+    case 'en':
+      return AppLocalizationsEn();
+    case 'pl':
+      return AppLocalizationsPl();
   }
 
   throw FlutterError(
-    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
-  );
+      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
 }

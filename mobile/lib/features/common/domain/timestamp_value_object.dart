@@ -2,22 +2,19 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:moti/architecture/domain/value_object.dart';
+import 'package:moti/features/common/domain/date_value_object.dart';
 
-class DateValueObject extends ValueObject<DateTime>
-    implements Comparable<DateValueObject> {
-  DateValueObject(super.value);
+class TimestampValueObject extends ValueObject<DateTime>
+    implements Comparable<TimestampValueObject> {
+  TimestampValueObject(super.value);
 
-  DateValueObject.invalid() : super.invalid();
+  TimestampValueObject.invalid() : super.invalid();
 
-  factory DateValueObject.today() => DateValueObject(DateTime.now());
+  factory TimestampValueObject.now() => TimestampValueObject(DateTime.now());
 
-  bool get isToday => this == DateValueObject.today();
+  bool get isToday => date.isToday;
 
-  @override
-  DateTime getOr(DateTime fallback) {
-    final result = value ?? fallback;
-    return DateTime(result.day, result.month, result.year);
-  }
+  DateValueObject get date => DateValueObject(value);
 
   @override
   DateTime? validate(DateTime? value) {
@@ -25,11 +22,11 @@ class DateValueObject extends ValueObject<DateTime>
       return null;
     }
 
-    return DateTime(value.year, value.month, value.day);
+    return value;
   }
 
   @override
-  int compareTo(DateValueObject other) {
+  int compareTo(TimestampValueObject other) {
     if (value == null) {
       return -1;
     }
@@ -41,7 +38,7 @@ class DateValueObject extends ValueObject<DateTime>
     return value!.compareTo(other.value!);
   }
 
-  bool isAfter(DateValueObject other) {
+  bool isAfter(TimestampValueObject other) {
     final date = value;
     if (date == null) {
       return false;
@@ -55,17 +52,17 @@ class DateValueObject extends ValueObject<DateTime>
     return date.isAfter(otherDate);
   }
 
-  DateValueObject operator -(Duration duration) {
+  TimestampValueObject operator -(Duration duration) {
     final date = value;
     if (date == null) {
-      return DateValueObject.invalid();
+      return TimestampValueObject.invalid();
     }
 
-    return DateValueObject(date.subtract(duration));
+    return TimestampValueObject(date.subtract(duration));
   }
 }
 
-extension IterableDateValueObjectX on Iterable<DateValueObject> {
+extension IterableDateTimeValueObjectX on Iterable<TimestampValueObject> {
   int get currentStreak {
     if (every((e) => !e.valid || isEmpty)) {
       return 0;
@@ -76,8 +73,8 @@ extension IterableDateValueObjectX on Iterable<DateValueObject> {
         .toSet()
         .sorted((a, b) => b.compareTo(a));
 
-    final today = DateValueObject.today().value!;
-    final firstDateDifference = today.difference(dates.first).inDays;
+    final now = TimestampValueObject.now().value!;
+    final firstDateDifference = now.difference(dates.first).inDays;
     if (firstDateDifference > 1) {
       return 0;
     }

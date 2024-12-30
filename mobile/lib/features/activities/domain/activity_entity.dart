@@ -6,8 +6,8 @@ import 'package:moti/features/activities/domain/activity_amount_entity.dart';
 import 'package:moti/features/activities/domain/activity_type_value_object.dart';
 import 'package:moti/features/activities/domain/amount_type_value_object.dart';
 import 'package:moti/features/activities/domain/amount_unit_value_object.dart';
-import 'package:moti/features/common/domain/date_value_object.dart';
 import 'package:moti/features/common/domain/double_value_object.dart';
+import 'package:moti/features/common/domain/timestamp_value_object.dart';
 
 class ActivitiesEntity extends EntityList<ActivityEntity> {
   const ActivitiesEntity(super.entities);
@@ -16,7 +16,7 @@ class ActivitiesEntity extends EntityList<ActivityEntity> {
     return ActivitiesEntity(
       models
           .map(ActivityEntity.fromModel)
-          .sorted((l, r) => r.date.compareTo(l.date))
+          .sorted((l, r) => r.timestamp.compareTo(l.timestamp))
           .toList(),
     );
   }
@@ -38,7 +38,7 @@ class ActivitiesEntity extends EntityList<ActivityEntity> {
   int get totalPushupRepsToday {
     return entities
         .where((e) => e.type == ActivityTypeValueObject.pushups())
-        .where((e) => e.date.isToday)
+        .where((e) => e.timestamp.isToday)
         .map((e) => e.amount.amount)
         .where((e) => e.valid)
         .fold(DoubleValueObject(0), (a, b) => a + b)
@@ -50,14 +50,14 @@ class ActivitiesEntity extends EntityList<ActivityEntity> {
 class ActivityEntity extends Entity {
   const ActivityEntity._({
     required this.type,
-    required this.date,
+    required this.timestamp,
     required this.amount,
   });
 
   factory ActivityEntity.fromModel(ActivityModel? model) {
     return ActivityEntity._(
       type: ActivityTypeValueObject(model?.name),
-      date: DateValueObject(model?.date),
+      timestamp: TimestampValueObject(model?.date),
       amount: ActivityAmountEntity.fromModel(model?.amount),
     );
   }
@@ -65,7 +65,7 @@ class ActivityEntity extends Entity {
   factory ActivityEntity.invalid() {
     return ActivityEntity._(
       type: ActivityTypeValueObject.invalid(),
-      date: DateValueObject.invalid(),
+      timestamp: TimestampValueObject.invalid(),
       amount: ActivityAmountEntity.invalid(),
     );
   }
@@ -73,7 +73,7 @@ class ActivityEntity extends Entity {
   factory ActivityEntity.pushups(int amount) {
     return ActivityEntity._(
       type: ActivityTypeValueObject.pushups(),
-      date: DateValueObject(DateTime.now()),
+      timestamp: TimestampValueObject(DateTime.now()),
       amount: ActivityAmountEntity(
         amount: DoubleValueObject(amount.toDouble()),
         type: AmountTypeValueObject.from(AmountType.reps),
@@ -85,17 +85,17 @@ class ActivityEntity extends Entity {
   ActivityModel toModel() {
     return ActivityModel(
       name: type.get.toValue(),
-      date: date.value,
+      date: timestamp.value,
       amount: amount.toModel(),
     );
   }
 
   final ActivityTypeValueObject type;
-  final DateValueObject date;
+  final TimestampValueObject timestamp;
   final ActivityAmountEntity amount;
 
   ActivityEntity operator +(ActivityEntity other) {
-    if (type != other.type || date != other.date) {
+    if (type != other.type || timestamp != other.timestamp) {
       throw ArgumentError(
         'Activities must have the same type and date to be added.',
       );
@@ -103,11 +103,11 @@ class ActivityEntity extends Entity {
 
     return ActivityEntity._(
       type: type,
-      date: date,
+      timestamp: timestamp,
       amount: amount + other.amount,
     );
   }
 
   @override
-  List<IValidable> get props => [type, date, amount];
+  List<IValidable> get props => [type, timestamp, amount];
 }
