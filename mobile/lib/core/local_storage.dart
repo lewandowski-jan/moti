@@ -44,7 +44,6 @@ class LocalStorage {
     }
 
     final json = _box.getAt(length - 1);
-
     if (json == null) {
       return null;
     }

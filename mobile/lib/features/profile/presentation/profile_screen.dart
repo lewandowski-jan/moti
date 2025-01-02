@@ -82,12 +82,14 @@ class ProfileScreen extends HookWidget {
                       builder: (context) {
                         return AlertDialog(
                           content: SettingGroup(
-                            value: profileCubit.state.gender.get,
+                            value: profileCubit.state.gender,
                             header: context.l10n.profile_gender,
                             options: [
-                              (Gender.male, context.l10n.gender_male),
-                              (Gender.female, context.l10n.gender_female),
-                            ],
+                              GenderValueObject(Gender.male),
+                              GenderValueObject(Gender.female),
+                            ]
+                                .map((e) => (e, e.getDisplay(context.l10n)))
+                                .toList(),
                             onChanged: (gender) {
                               profileCubit.setGender(gender);
                               Navigator.of(context).pop();

@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:moti/architecture/domain/positive_integer_value_object.dart';
 import 'package:moti/architecture/domain/string_non_empty_value_object.dart';
 
-import 'package:moti/architecture/domain/value_object.dart';
 import 'package:moti/features/measurements/data/models/measurement_model.dart';
 import 'package:moti/features/measurements/domain/height_entity.dart';
 import 'package:moti/features/measurements/domain/weight_entity.dart';
@@ -32,8 +32,8 @@ class ProfileCubit extends HydratedCubit<ProfileState> {
     emit(state.copyWith(name: StringNonEmptyValueObject(name)));
   }
 
-  void setGender(Gender gender) {
-    emit(state.copyWith(gender: GenderValueObject(gender)));
+  void setGender(GenderValueObject gender) {
+    emit(state.copyWith(gender: gender));
   }
 
   void setHeight(HeightEntity height) {
@@ -41,7 +41,7 @@ class ProfileCubit extends HydratedCubit<ProfileState> {
   }
 
   void setDailyGoal(int? goal) {
-    emit(state.copyWith(dailyGoal: ValueObject(goal)));
+    emit(state.copyWith(dailyGoal: PositiveIntegerValueObject(goal)));
   }
 
   @override
@@ -53,7 +53,7 @@ class ProfileCubit extends HydratedCubit<ProfileState> {
     final heightModel =
         MeasurementModel.fromJson(json['height'] as Map<String, dynamic>?);
     final height = HeightEntity.fromModel(heightModel);
-    final dailyGoal = ValueObject(json['dailyGoal'] as int?);
+    final dailyGoal = PositiveIntegerValueObject(json['dailyGoal'] as int?);
 
     return ProfileState(
       name: name,
@@ -90,7 +90,7 @@ class ProfileState extends Equatable {
       gender: GenderValueObject.invalid(),
       height: HeightEntity.invalid(),
       weight: WeightEntity.invalid(),
-      dailyGoal: ValueObject.invalid(),
+      dailyGoal: PositiveIntegerValueObject.invalid(),
     );
   }
 
@@ -98,14 +98,14 @@ class ProfileState extends Equatable {
   final GenderValueObject gender;
   final HeightEntity height;
   final WeightEntity weight;
-  final ValueObject<int> dailyGoal;
+  final PositiveIntegerValueObject dailyGoal;
 
   ProfileState copyWith({
     StringNonEmptyValueObject? name,
     GenderValueObject? gender,
     HeightEntity? height,
     WeightEntity? weight,
-    ValueObject<int>? dailyGoal,
+    PositiveIntegerValueObject? dailyGoal,
   }) {
     return ProfileState(
       name: name ?? this.name,

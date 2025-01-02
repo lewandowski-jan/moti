@@ -47,7 +47,7 @@ class GenderValueObject extends ValueObject<Gender> {
 
   @override
   Gender? validate(Gender? value) {
-    if (value == null) {
+    if (value == null || value == Gender.invalid) {
       return null;
     }
 
