@@ -1,13 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:moti/features/activities/data/activities_service.dart';
+import 'package:moti/features/activities/data/activity_service.dart';
 import 'package:moti/features/activities/domain/activity_entity.dart';
 
 class ActivitiesRepository {
-  final ActivitiesService _service;
+  final ActivityService _service;
 
   ActivitiesRepository({
-    required ActivitiesService service,
-  }) : _service = service;
+    required ActivityService activityService,
+  }) : _service = activityService;
 
   Future<void> addActivity(ActivityEntity activity) async {
     final activityType = activity.type;

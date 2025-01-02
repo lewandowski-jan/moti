@@ -1,8 +1,8 @@
 import 'package:moti/core/local_storage.dart';
 import 'package:moti/features/activities/data/models/activity_model.dart';
 
-class ActivitiesService {
-  const ActivitiesService({required LocalStorage storage}) : _storage = storage;
+class ActivityService {
+  const ActivityService({required LocalStorage storage}) : _storage = storage;
 
   final LocalStorage _storage;
 

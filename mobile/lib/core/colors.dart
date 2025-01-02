@@ -53,6 +53,7 @@ abstract class MTColors {
   MTColor get success;
 
   MTColor get background;
+  MTColor get onBackground;
 }
 
 class _ColorsLight extends MTColors {
@@ -81,6 +82,9 @@ class _ColorsLight extends MTColors {
 
   @override
   MTColor get success => const MTColor._(0xFF5CFEA6);
+
+  @override
+  MTColor get onBackground => black;
 }
 
 class _ColorsDark extends MTColors {
@@ -109,4 +113,7 @@ class _ColorsDark extends MTColors {
 
   @override
   MTColor get success => const MTColor._(0xFF66BB6A);
+
+  @override
+  MTColor get onBackground => white;
 }

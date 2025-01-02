@@ -50,7 +50,7 @@ class HomeScreen extends HookWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton.filled(
-          onPressed: () {},
+          onPressed: () => ProfileRoute().go(context),
           style: ButtonStyle(
             backgroundColor: WidgetStatePropertyAll(context.colors.primary),
           ),
