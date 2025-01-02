@@ -224,6 +224,84 @@ abstract class AppLocalizations {
   /// **'English'**
   String get language_english;
 
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @profile_name.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get profile_name;
+
+  /// No description provided for @profile_gender.
+  ///
+  /// In en, this message translates to:
+  /// **'Gender'**
+  String get profile_gender;
+
+  /// No description provided for @gender_male.
+  ///
+  /// In en, this message translates to:
+  /// **'male'**
+  String get gender_male;
+
+  /// No description provided for @gender_female.
+  ///
+  /// In en, this message translates to:
+  /// **'female'**
+  String get gender_female;
+
+  /// No description provided for @profile_height.
+  ///
+  /// In en, this message translates to:
+  /// **'Height'**
+  String get profile_height;
+
+  /// No description provided for @height_unit_cm.
+  ///
+  /// In en, this message translates to:
+  /// **'cm'**
+  String get height_unit_cm;
+
+  /// No description provided for @height_unit_ft.
+  ///
+  /// In en, this message translates to:
+  /// **'ft'**
+  String get height_unit_ft;
+
+  /// No description provided for @height_unit_in.
+  ///
+  /// In en, this message translates to:
+  /// **'in'**
+  String get height_unit_in;
+
+  /// No description provided for @profile_weight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get profile_weight;
+
+  /// No description provided for @weight_unit_kg.
+  ///
+  /// In en, this message translates to:
+  /// **'kg'**
+  String get weight_unit_kg;
+
+  /// No description provided for @weight_unit_lb.
+  ///
+  /// In en, this message translates to:
+  /// **'lb'**
+  String get weight_unit_lb;
+
+  /// No description provided for @profile_daily_goal.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily goal'**
+  String get profile_daily_goal;
+
   /// No description provided for @reminders_reminder_title.
   ///
   /// In en, this message translates to:

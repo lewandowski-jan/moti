@@ -7,8 +7,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:moti/core/local_storage.dart';
 import 'package:moti/core/router.dart';
 import 'package:moti/features/activities/application/activities_cubit.dart';
-import 'package:moti/features/activities/data/activities_service.dart';
+import 'package:moti/features/activities/data/activity_service.dart';
 import 'package:moti/features/activities/domain/activities_repository.dart';
+import 'package:moti/features/measurements/data/weight_service.dart';
+import 'package:moti/features/measurements/domain/weight_repository.dart';
+import 'package:moti/features/profile/application/profile_cubit.dart';
 import 'package:moti/features/reminders/local_notifications.dart';
 import 'package:moti/features/reminders/presentation/motivational_text_generator.dart';
 import 'package:moti/features/settings/language/language_cubit.dart';
@@ -21,11 +24,13 @@ import 'package:provider/provider.dart';
 class MTGlobalProviders extends StatelessWidget {
   const MTGlobalProviders({
     super.key,
-    required this.activitiesStorage,
+    required this.activityStorage,
+    required this.weightStorage,
     required this.child,
   });
 
-  final LocalStorage activitiesStorage;
+  final LocalStorage activityStorage;
+  final LocalStorage weightStorage;
   final Widget child;
 
   @override
@@ -44,19 +49,29 @@ class MTGlobalProviders extends StatelessWidget {
             FlutterLocalNotificationsPlugin(),
           )..init(),
         ),
-        Provider<ActivitiesService>(
-          create: (_) => ActivitiesService(
-            storage: activitiesStorage,
+        Provider<ActivityService>(
+          create: (_) => ActivityService(
+            storage: activityStorage,
+          ),
+        ),
+        Provider<WeightService>(
+          create: (_) => WeightService(
+            storage: weightStorage,
           ),
         ),
         Provider<ActivitiesRepository>(
           create: (context) => ActivitiesRepository(
-            service: context.read(),
+            activityService: context.read(),
+          ),
+        ),
+        Provider<WeightRepository>(
+          create: (context) => WeightRepository(
+            weightService: context.read(),
           ),
         ),
         BlocProvider<ActivitiesCubit>(
           create: (context) => ActivitiesCubit(
-            context.read(),
+            activitiesRepository: context.read(),
           )..fetchActivitiesData(),
         ),
         BlocProvider<ThemeCubit>(
@@ -68,6 +83,11 @@ class MTGlobalProviders extends StatelessWidget {
               systemLocales: systemLocales,
               appLocales: appLocales,
             ),
+        ),
+        BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(
+            weightRepository: context.read(),
+          )..init(),
         ),
       ],
       child: BlocConsumer<LanguageCubit, Locale?>(

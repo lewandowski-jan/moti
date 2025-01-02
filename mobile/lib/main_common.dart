@@ -19,11 +19,13 @@ Future<void> mainCommon(AppConfiguration appConfiguration) async {
 
   await Hive.initFlutter();
 
-  final activitiesStorage = await LocalStorage.init(id: 'activities');
+  final activityStorage = await LocalStorage.init(id: 'activities');
+  final weightStorage = await LocalStorage.init(id: 'weight');
 
   runApp(
     MTGlobalProviders(
-      activitiesStorage: activitiesStorage,
+      activityStorage: activityStorage,
+      weightStorage: weightStorage,
       child: const MTApp(),
     ),
   );

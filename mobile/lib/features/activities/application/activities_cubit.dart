@@ -11,15 +11,16 @@ enum ActivitiesMessage { firstActivityLoggedToday }
 
 class ActivitiesCubit extends Cubit<ActivitiesState>
     with Sender<ActivitiesMessage> {
-  ActivitiesCubit(this._activitiesRepository) : super(const ActivitiesState());
+  ActivitiesCubit({required this.activitiesRepository})
+      : super(const ActivitiesState());
 
-  final ActivitiesRepository _activitiesRepository;
+  final ActivitiesRepository activitiesRepository;
 
   Future<void> fetchActivitiesData() async {
     try {
       emit(state.copyWith(status: ActivitiesStatus.loading));
 
-      final activities = _activitiesRepository.getAllActivities();
+      final activities = activitiesRepository.getAllActivities();
 
       if (!activities.valid && activities.entities.isNotEmpty) {
         emit(state.copyWith(status: ActivitiesStatus.error));
@@ -70,7 +71,7 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
 
   Future<bool> _logActivity(ActivityEntity activity) async {
     try {
-      await _activitiesRepository.addActivity(activity);
+      await activitiesRepository.addActivity(activity);
 
       if (!state.doneToday) {
         send(ActivitiesMessage.firstActivityLoggedToday);

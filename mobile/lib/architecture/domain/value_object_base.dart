@@ -10,6 +10,8 @@ abstract class ValueObjectBase<T extends Object> extends Equatable
 
   T getOr(T fallback) => value ?? fallback;
 
+  T? get getOrNull => value;
+
   @override
   List<dynamic> get props => [value];
 }

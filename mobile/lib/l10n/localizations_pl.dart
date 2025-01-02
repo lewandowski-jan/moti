@@ -72,6 +72,45 @@ class AppLocalizationsPl extends AppLocalizations {
   String get language_english => 'Angielski';
 
   @override
+  String get profile => 'Profil';
+
+  @override
+  String get profile_name => 'Imię';
+
+  @override
+  String get profile_gender => 'Płeć';
+
+  @override
+  String get gender_male => 'mężczyzna';
+
+  @override
+  String get gender_female => 'kobieta';
+
+  @override
+  String get profile_height => 'Wzrost';
+
+  @override
+  String get height_unit_cm => 'cm';
+
+  @override
+  String get height_unit_ft => 'ft';
+
+  @override
+  String get height_unit_in => 'in';
+
+  @override
+  String get profile_weight => 'Waga';
+
+  @override
+  String get weight_unit_kg => 'kg';
+
+  @override
+  String get weight_unit_lb => 'lb';
+
+  @override
+  String get profile_daily_goal => 'Dzienny cel';
+
+  @override
   String get reminders_reminder_title => 'Przypomnienie';
 
   @override

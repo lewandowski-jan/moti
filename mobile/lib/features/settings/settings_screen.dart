@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
           children: [
             BlocBuilder<ThemeCubit, ThemeMode>(
               builder: (context, state) {
-                return _SettingGroup(
+                return SettingGroup(
                   value: state,
                   header: context.l10n.settings_theme,
                   onChanged: context.read<ThemeCubit>().setTheme,
@@ -34,7 +34,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             BlocBuilder<LanguageCubit, Locale?>(
               builder: (context, state) {
-                return _SettingGroup(
+                return SettingGroup(
                   value: state,
                   header: context.l10n.settings_language,
                   onChanged: (newLanguage) {
@@ -54,10 +54,11 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
-typedef _SettingOption<T> = (T, String);
+typedef SettingOption<T> = (T, String);
 
-class _SettingGroup<T> extends StatelessWidget {
-  const _SettingGroup({
+class SettingGroup<T> extends StatelessWidget {
+  const SettingGroup({
+    super.key,
     required this.value,
     required this.header,
     required this.options,
@@ -66,12 +67,13 @@ class _SettingGroup<T> extends StatelessWidget {
 
   final T value;
   final String header;
-  final List<_SettingOption<T>> options;
+  final List<SettingOption<T>> options;
   final ValueChanged<T> onChanged;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(

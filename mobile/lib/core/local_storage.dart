@@ -37,6 +37,21 @@ class LocalStorage {
     });
   }
 
+  T? getLast<T>(FromJson<T> fromJson) {
+    final length = _box.length;
+    if (length == 0) {
+      return null;
+    }
+
+    final json = _box.getAt(length - 1);
+
+    if (json == null) {
+      return null;
+    }
+
+    return fromJson(json);
+  }
+
   Future<void> update(int key, Model value) async {
     return _box.put(key, value.toJson());
   }

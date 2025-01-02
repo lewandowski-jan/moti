@@ -72,6 +72,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language_english => 'English';
 
   @override
+  String get profile => 'Profile';
+
+  @override
+  String get profile_name => 'Name';
+
+  @override
+  String get profile_gender => 'Gender';
+
+  @override
+  String get gender_male => 'male';
+
+  @override
+  String get gender_female => 'female';
+
+  @override
+  String get profile_height => 'Height';
+
+  @override
+  String get height_unit_cm => 'cm';
+
+  @override
+  String get height_unit_ft => 'ft';
+
+  @override
+  String get height_unit_in => 'in';
+
+  @override
+  String get profile_weight => 'Weight';
+
+  @override
+  String get weight_unit_kg => 'kg';
+
+  @override
+  String get weight_unit_lb => 'lb';
+
+  @override
+  String get profile_daily_goal => 'Daily goal';
+
+  @override
   String get reminders_reminder_title => 'Reminder';
 
   @override
