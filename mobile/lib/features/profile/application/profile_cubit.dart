@@ -22,8 +22,15 @@ class ProfileCubit extends HydratedCubit<ProfileState> {
     emit(state.copyWith(weight: lastWeight));
   }
 
+  var _weight = WeightEntity.invalid();
+
   Future<void> setWeight(WeightEntity weight) async {
-    await weightRepository.addWeight(weight);
+    _weight = weight;
+  }
+
+  Future<void> onWeightSubmitted() async {
+    await weightRepository.addWeight(_weight);
+    _weight = WeightEntity.invalid();
 
     init();
   }

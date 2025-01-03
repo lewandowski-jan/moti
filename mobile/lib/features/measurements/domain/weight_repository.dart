@@ -6,8 +6,13 @@ class WeightRepository {
 
   final WeightService weightService;
 
-  Future<void> addWeight(WeightEntity weight) async =>
-      weightService.addWeight(weight.toModel());
+  Future<void> addWeight(WeightEntity weight) async {
+    if (!weight.valid) {
+      return;
+    }
+
+    return weightService.addWeight(weight.toModel());
+  }
 
   WeightEntity getLastWeight() {
     final model = weightService.getLastWeight();

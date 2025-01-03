@@ -209,6 +209,8 @@ class ProfileScreen extends HookWidget {
                         );
                       },
                     );
+
+                    await profileCubit.onWeightSubmitted();
                   },
                   title: Text(
                     context.l10n.profile_weight,
