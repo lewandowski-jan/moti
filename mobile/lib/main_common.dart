@@ -20,7 +20,11 @@ Future<void> mainCommon(AppConfiguration appConfiguration) async {
   await Hive.initFlutter();
 
   final activityStorage = await LocalStorage.init(id: 'activities');
-  final weightStorage = await LocalStorage.init(id: 'weight');
+  final weightStorage = await LocalStorage.init(id: 'weights');
+
+  // TODO(iasiu): remove this legacy code
+  final weightStorageOld = await LocalStorage.init(id: 'weight');
+  await weightStorageOld.clear();
 
   runApp(
     MTGlobalProviders(
