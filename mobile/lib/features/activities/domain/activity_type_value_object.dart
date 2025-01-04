@@ -5,10 +5,14 @@ import 'package:moti/architecture/domain/enum_value_object.dart';
 
 enum ActivityType {
   pushups,
+  squats,
+  situps,
   invalid;
 
   static const _mapping = {
     '1': ActivityType.pushups,
+    '2': ActivityType.squats,
+    '3': ActivityType.situps,
     // legacy values
     'Pushups': ActivityType.pushups,
     'ActivityType.pushups': ActivityType.pushups,

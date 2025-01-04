@@ -5,12 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_comms/flutter_comms.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
+import 'package:moti/components/speedometer/speedometer.dart';
+import 'package:moti/components/speedometer/speedometer_properties.dart';
 import 'package:moti/core/context.dart';
 import 'package:moti/core/routes.dart';
 import 'package:moti/features/activities/application/activities_cubit.dart';
+import 'package:moti/features/home/application/moti_index_cubit.dart';
 import 'package:moti/features/home/presentation/widgets/add_activity.dart';
 import 'package:moti/features/home/presentation/widgets/summary_stats.dart';
-import 'package:moti/features/home/presentation/widgets/week_chart.dart';
 import 'package:moti/features/reminders/local_notifications.dart';
 import 'package:moti/features/reminders/presentation/motivational_text_generator.dart';
 
@@ -23,6 +25,7 @@ class HomeScreen extends HookWidget {
       () {
         context.read<LocalNotifications>().requestPermission();
         context.read<ActivitiesCubit>().fetchActivitiesData();
+        context.read<MotiIndexCubit>().reload();
         return null;
       },
       [],
@@ -92,10 +95,8 @@ class HomeBody extends StatelessWidget {
 
         final streak = state.streak;
         final maxStreak = state.maxStreak;
-        // final doneToday = state.doneToday;
-        final totalToday = state.totalToday;
-        final total = state.totalReps;
-        final lastWeekActivities = state.lastWeekActivities;
+        final totalToday = state.totalMotiPointsToday;
+        final total = state.totalMotiPoints;
 
         return Stack(
           alignment: Alignment.topCenter,
@@ -105,9 +106,14 @@ class HomeBody extends StatelessWidget {
               child: Column(
                 children: [
                   const SizedBox(height: kToolbarHeight + 48 + 24),
-                  WeekChart(
-                    lastWeekActivities: lastWeekActivities,
-                    barColor: context.colors.primary,
+                  BlocBuilder<MotiIndexCubit, int>(
+                    builder: (context, state) {
+                      return Speedometer(
+                        type: SpeedometerType.motiIndex,
+                        animated: true,
+                        value: state,
+                      );
+                    },
                   ),
                   const SizedBox(height: 48),
                   SummaryStats(
@@ -118,7 +124,9 @@ class HomeBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 40),
                   AddActivity(
-                    onAdd: context.read<ActivitiesCubit>().logPushups,
+                    onAdd: (reps) => context.read<ActivitiesCubit>().logPushups(
+                          reps: reps,
+                        ),
                   ),
                 ],
               ),

@@ -31,9 +31,9 @@ class ActivityAmountEntity extends Entity {
 
   AmountModel toModel() {
     return AmountModel(
-      type: type.value.toString(),
-      unit: unit.value.toString(),
-      value: amount.value,
+      type: type.getOrNull.toString(),
+      unit: unit.getOrNull.toString(),
+      value: amount.getOrNull,
     );
   }
 

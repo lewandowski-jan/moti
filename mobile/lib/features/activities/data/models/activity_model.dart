@@ -4,9 +4,10 @@ import 'package:moti/features/activities/data/models/amount_model.dart';
 
 class ActivityModel extends Model {
   const ActivityModel({
-    this.name,
-    this.date,
-    this.amount,
+    required this.name,
+    required this.date,
+    required this.amount,
+    required this.motiPoints,
   });
 
   factory ActivityModel.fromJson(Map<dynamic, dynamic> json) {
@@ -18,12 +19,15 @@ class ActivityModel extends Model {
       amount: json['amount'] != null
           ? AmountModel.fromJson(json['amount'] as Map<dynamic, dynamic>)
           : null,
+      motiPoints:
+          json['motiPoints'] != null ? json['motiPoints'] as double : null,
     );
   }
 
   final String? name;
   final DateTime? date;
   final AmountModel? amount;
+  final double? motiPoints;
 
   @override
   Map<String, dynamic> toJson() {
@@ -31,6 +35,7 @@ class ActivityModel extends Model {
       'name': name,
       'date': date?.millisecondsSinceEpoch,
       'amount': amount?.toJson(),
+      'motiPoints': motiPoints,
     };
   }
 }

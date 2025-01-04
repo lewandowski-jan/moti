@@ -111,6 +111,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_daily_goal => 'Daily goal';
 
   @override
+  String get moti_index => 'Moti Index';
+
+  @override
+  String get moti_points => 'MT points';
+
+  @override
+  String get mt => 'MT';
+
+  @override
   String get reminders_reminder_title => 'Reminder';
 
   @override

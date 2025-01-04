@@ -14,7 +14,7 @@ class TimestampValueObject extends ValueObject<DateTime>
 
   bool get isToday => date.isToday;
 
-  DateValueObject get date => DateValueObject(value);
+  DateValueObject get date => DateValueObject(getOrNull);
 
   @override
   DateTime? validate(DateTime? value) {
@@ -27,24 +27,24 @@ class TimestampValueObject extends ValueObject<DateTime>
 
   @override
   int compareTo(TimestampValueObject other) {
-    if (value == null) {
+    if (getOrNull == null) {
       return -1;
     }
 
-    if (other.value == null) {
+    if (other.getOrNull == null) {
       return 1;
     }
 
-    return value!.compareTo(other.value!);
+    return getOrNull!.compareTo(other.getOrNull!);
   }
 
   bool isAfter(TimestampValueObject other) {
-    final date = value;
+    final date = getOrNull;
     if (date == null) {
       return false;
     }
 
-    final otherDate = other.value;
+    final otherDate = other.getOrNull;
     if (otherDate == null) {
       return false;
     }
@@ -53,7 +53,7 @@ class TimestampValueObject extends ValueObject<DateTime>
   }
 
   TimestampValueObject operator -(Duration duration) {
-    final date = value;
+    final date = getOrNull;
     if (date == null) {
       return TimestampValueObject.invalid();
     }
@@ -69,11 +69,11 @@ extension IterableDateTimeValueObjectX on Iterable<TimestampValueObject> {
     }
 
     final dates = where((e) => e.valid)
-        .map((e) => e.value!)
+        .map((e) => e.getOrNull!)
         .toSet()
         .sorted((a, b) => b.compareTo(a));
 
-    final now = TimestampValueObject.now().value!;
+    final now = TimestampValueObject.now().getOrNull!;
     final firstDateDifference = now.difference(dates.first).inDays;
     if (firstDateDifference > 1) {
       return 0;
@@ -107,7 +107,7 @@ extension IterableDateTimeValueObjectX on Iterable<TimestampValueObject> {
     var currentStreak = 0;
 
     final dates = where((e) => e.valid)
-        .map((e) => e.value!)
+        .map((e) => e.getOrNull!)
         .toSet()
         .sorted((a, b) => b.compareTo(a));
 

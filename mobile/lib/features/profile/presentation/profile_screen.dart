@@ -55,6 +55,8 @@ class ProfileScreen extends HookWidget {
                         );
                       },
                     );
+
+                    await profileCubit.onProfileSubmitted();
                   },
                   title: Text(
                     context.l10n.profile_name,
@@ -98,6 +100,8 @@ class ProfileScreen extends HookWidget {
                         );
                       },
                     );
+
+                    await profileCubit.onProfileSubmitted();
                   },
                   title: Text(
                     context.l10n.profile_gender,
@@ -152,6 +156,8 @@ class ProfileScreen extends HookWidget {
                         );
                       },
                     );
+
+                    await profileCubit.onProfileSubmitted();
                   },
                   title: Text(
                     context.l10n.profile_height,
@@ -249,6 +255,7 @@ class ProfileScreen extends HookWidget {
                             onChanged: (value) =>
                                 profileCubit.setDailyGoal(int.tryParse(value)),
                             decoration: InputDecoration(
+                              suffixText: context.l10n.mt,
                               labelText: context.l10n.profile_daily_goal,
                               border: const OutlineInputBorder(),
                             ),
@@ -256,6 +263,8 @@ class ProfileScreen extends HookWidget {
                         );
                       },
                     );
+
+                    await profileCubit.onProfileSubmitted();
                   },
                   title: Text(
                     context.l10n.profile_daily_goal,
@@ -267,7 +276,9 @@ class ProfileScreen extends HookWidget {
                       const Icon(Icons.arrow_right),
                       const SizedBox(width: 8),
                       Text(
-                        state.dailyGoal.getOrNull?.toString() ?? '-',
+                        state.dailyGoal.getOrNull != null
+                            ? '${state.dailyGoal.getOrNull} ${context.l10n.mt}'
+                            : '-',
                         style: context.textTheme.titleMedium,
                       ),
                     ],

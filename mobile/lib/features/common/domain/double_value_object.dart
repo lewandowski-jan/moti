@@ -15,6 +15,6 @@ class DoubleValueObject extends ValueObject<double> {
       return DoubleValueObject.invalid();
     }
 
-    return DoubleValueObject(value! + other.value!);
+    return DoubleValueObject(getOrNull! + other.getOrNull!);
   }
 }
