@@ -10,6 +10,10 @@ class ActivitiesRepository {
   }) : _service = activityService;
 
   Future<void> addActivity(ActivityEntity activity) async {
+    if (!activity.valid) {
+      return;
+    }
+
     final activityType = activity.type;
     if (!activityType.valid) {
       return;
@@ -22,5 +26,20 @@ class ActivitiesRepository {
     final activities = _service.getAllActivities();
 
     return ActivitiesEntity.fromModel(activities.values);
+  }
+
+  Map<int, ActivityEntity> getAllActivitiesMap() {
+    final activities = _service.getAllActivities();
+
+    return activities.map(
+      (key, model) => MapEntry(key, ActivityEntity.fromModel(model)),
+    );
+  }
+
+  Future<void> updateActivity({
+    required int key,
+    required ActivityEntity activity,
+  }) {
+    return _service.updateActivity(key, activity.toModel());
   }
 }

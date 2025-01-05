@@ -15,7 +15,7 @@ class DateValueObject extends ValueObject<DateTime>
 
   @override
   DateTime getOr(DateTime fallback) {
-    final result = value ?? fallback;
+    final result = getOrNull ?? fallback;
     return DateTime(result.day, result.month, result.year);
   }
 
@@ -30,24 +30,24 @@ class DateValueObject extends ValueObject<DateTime>
 
   @override
   int compareTo(DateValueObject other) {
-    if (value == null) {
+    if (getOrNull == null) {
       return -1;
     }
 
-    if (other.value == null) {
+    if (other.getOrNull == null) {
       return 1;
     }
 
-    return value!.compareTo(other.value!);
+    return getOrNull!.compareTo(other.getOrNull!);
   }
 
   bool isAfter(DateValueObject other) {
-    final date = value;
+    final date = getOrNull;
     if (date == null) {
       return false;
     }
 
-    final otherDate = other.value;
+    final otherDate = other.getOrNull;
     if (otherDate == null) {
       return false;
     }
@@ -56,7 +56,7 @@ class DateValueObject extends ValueObject<DateTime>
   }
 
   DateValueObject operator -(Duration duration) {
-    final date = value;
+    final date = getOrNull;
     if (date == null) {
       return DateValueObject.invalid();
     }
@@ -72,11 +72,11 @@ extension IterableDateValueObjectX on Iterable<DateValueObject> {
     }
 
     final dates = where((e) => e.valid)
-        .map((e) => e.value!)
+        .map((e) => e.getOrNull!)
         .toSet()
         .sorted((a, b) => b.compareTo(a));
 
-    final today = DateValueObject.today().value!;
+    final today = DateValueObject.today().getOrNull!;
     final firstDateDifference = today.difference(dates.first).inDays;
     if (firstDateDifference > 1) {
       return 0;
@@ -110,7 +110,7 @@ extension IterableDateValueObjectX on Iterable<DateValueObject> {
     var currentStreak = 0;
 
     final dates = where((e) => e.valid)
-        .map((e) => e.value!)
+        .map((e) => e.getOrNull!)
         .toSet()
         .sorted((a, b) => b.compareTo(a));
 

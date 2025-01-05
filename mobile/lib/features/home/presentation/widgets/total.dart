@@ -17,7 +17,7 @@ class Total extends StatelessWidget {
     return Column(
       children: [
         Text(
-          context.l10n.total_total,
+          context.l10n.moti_points,
           style: context.textTheme.titleLarge,
         ),
         Column(

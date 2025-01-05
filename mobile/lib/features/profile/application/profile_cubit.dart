@@ -1,25 +1,42 @@
 import 'package:equatable/equatable.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_comms/flutter_comms.dart';
 import 'package:moti/architecture/domain/positive_integer_value_object.dart';
 import 'package:moti/architecture/domain/string_non_empty_value_object.dart';
 
-import 'package:moti/features/measurements/data/models/measurement_model.dart';
 import 'package:moti/features/measurements/domain/height_entity.dart';
 import 'package:moti/features/measurements/domain/weight_entity.dart';
 import 'package:moti/features/measurements/domain/weight_repository.dart';
 import 'package:moti/features/profile/domain/gender_value_object.dart';
+import 'package:moti/features/profile/domain/profile_entity.dart';
+import 'package:moti/features/profile/domain/profile_repository.dart';
 
-class ProfileCubit extends HydratedCubit<ProfileState> {
+enum ProfileMessage {
+  profileUpdated;
+}
+
+class ProfileCubit extends Cubit<ProfileState> with Sender<ProfileMessage> {
   ProfileCubit({
     required this.weightRepository,
+    required this.profileRepository,
   }) : super(ProfileState.initial());
 
   final WeightRepository weightRepository;
+  final ProfileRepository profileRepository;
 
   void init() {
     final lastWeight = weightRepository.getLastWeight();
+    final profile = profileRepository.getProfile();
 
-    emit(state.copyWith(weight: lastWeight));
+    emit(
+      state.copyWith(
+        weight: lastWeight,
+        name: profile.name,
+        dailyGoal: profile.dailyGoal,
+        height: profile.height,
+        gender: profile.gender,
+      ),
+    );
   }
 
   var _weight = WeightEntity.invalid();
@@ -31,6 +48,21 @@ class ProfileCubit extends HydratedCubit<ProfileState> {
   Future<void> onWeightSubmitted() async {
     await weightRepository.addWeight(_weight);
     _weight = WeightEntity.invalid();
+
+    init();
+  }
+
+  Future<void> onProfileSubmitted() async {
+    await profileRepository.saveProfile(
+      ProfileEntity(
+        name: state.name,
+        gender: state.gender,
+        height: state.height,
+        dailyGoal: state.dailyGoal,
+      ),
+    );
+
+    send(ProfileMessage.profileUpdated);
 
     init();
   }
@@ -49,36 +81,6 @@ class ProfileCubit extends HydratedCubit<ProfileState> {
 
   void setDailyGoal(int? goal) {
     emit(state.copyWith(dailyGoal: PositiveIntegerValueObject(goal)));
-  }
-
-  @override
-  ProfileState? fromJson(Map<String, dynamic> json) {
-    final name = StringNonEmptyValueObject(json['name'] as String?);
-    final gender = GenderValueObject(
-      Gender.fromString(json['gender'] as String?),
-    );
-    final heightModel =
-        MeasurementModel.fromJson(json['height'] as Map<String, dynamic>?);
-    final height = HeightEntity.fromModel(heightModel);
-    final dailyGoal = PositiveIntegerValueObject(json['dailyGoal'] as int?);
-
-    return ProfileState(
-      name: name,
-      gender: gender,
-      height: height,
-      dailyGoal: dailyGoal,
-      weight: WeightEntity.invalid(),
-    );
-  }
-
-  @override
-  Map<String, dynamic>? toJson(ProfileState state) {
-    return {
-      'name': state.name.value,
-      'gender': state.gender.value.toString(),
-      'height': state.height.toModel().toJson(),
-      'dailyGoal': state.dailyGoal.value,
-    };
   }
 }
 

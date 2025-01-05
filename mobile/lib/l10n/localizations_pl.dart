@@ -45,7 +45,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get total_today_total => 'Dzisiaj';
 
   @override
-  String get total_all_time_total => 'Zawsze';
+  String get total_all_time_total => 'Łącznie';
 
   @override
   String get settings => 'Ustawienia';
@@ -109,6 +109,15 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get profile_daily_goal => 'Dzienny cel';
+
+  @override
+  String get moti_index => 'Indeks Moti';
+
+  @override
+  String get moti_points => 'Punkty MT';
+
+  @override
+  String get mt => 'MT';
 
   @override
   String get reminders_reminder_title => 'Przypomnienie';

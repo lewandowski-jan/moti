@@ -23,9 +23,9 @@ abstract class MeasurementEntity extends Entity {
 
   MeasurementModel toModel() {
     return MeasurementModel(
-      amount: amount.value,
-      unit: unit.value,
-      timestamp: timestamp.value,
+      amount: amount.getOrNull,
+      unit: unit.getOrNull,
+      timestamp: timestamp.getOrNull,
     );
   }
 

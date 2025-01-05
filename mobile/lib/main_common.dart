@@ -21,15 +21,13 @@ Future<void> mainCommon(AppConfiguration appConfiguration) async {
 
   final activityStorage = await LocalStorage.init(id: 'activities');
   final weightStorage = await LocalStorage.init(id: 'weights');
-
-  // TODO(iasiu): remove this legacy code
-  final weightStorageOld = await LocalStorage.init(id: 'weight');
-  await weightStorageOld.clear();
+  final profileStorage = await LocalStorage.init(id: 'profile');
 
   runApp(
     MTGlobalProviders(
       activityStorage: activityStorage,
       weightStorage: weightStorage,
+      profileStorage: profileStorage,
       child: const MTApp(),
     ),
   );

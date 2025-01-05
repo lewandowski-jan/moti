@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+
 import 'package:moti/architecture/domain/entity.dart';
 import 'package:moti/architecture/domain/validable.dart';
 import 'package:moti/features/activities/data/models/activity_model.dart';
@@ -8,6 +9,9 @@ import 'package:moti/features/activities/domain/amount_type_value_object.dart';
 import 'package:moti/features/activities/domain/amount_unit_value_object.dart';
 import 'package:moti/features/common/domain/double_value_object.dart';
 import 'package:moti/features/common/domain/timestamp_value_object.dart';
+import 'package:moti/features/measurements/domain/height_entity.dart';
+import 'package:moti/features/measurements/domain/weight_entity.dart';
+import 'package:moti/features/statistics/domain/moti_points_value_object.dart';
 
 class ActivitiesEntity extends EntityList<ActivityEntity> {
   const ActivitiesEntity(super.entities);
@@ -25,25 +29,19 @@ class ActivitiesEntity extends EntityList<ActivityEntity> {
     return entities.map((e) => e.toModel()).toList();
   }
 
-  int get totalPushupReps {
+  MotiPointsValueObject get totalMotiPoints {
     return entities
-        .where((e) => e.type == ActivityTypeValueObject.pushups())
-        .map((e) => e.amount.amount)
+        .map((e) => e.motiPoints)
         .where((e) => e.valid)
-        .fold(DoubleValueObject(0), (a, b) => a + b)
-        .getOr(0)
-        .toInt();
+        .fold(MotiPointsValueObject.fromModel(0), (a, b) => a + b);
   }
 
-  int get totalPushupRepsToday {
+  MotiPointsValueObject get totalMotiPointsToday {
     return entities
-        .where((e) => e.type == ActivityTypeValueObject.pushups())
         .where((e) => e.timestamp.isToday)
-        .map((e) => e.amount.amount)
+        .map((e) => e.motiPoints)
         .where((e) => e.valid)
-        .fold(DoubleValueObject(0), (a, b) => a + b)
-        .getOr(0)
-        .toInt();
+        .fold(MotiPointsValueObject.fromModel(0), (a, b) => a + b);
   }
 }
 
@@ -52,6 +50,7 @@ class ActivityEntity extends Entity {
     required this.type,
     required this.timestamp,
     required this.amount,
+    required this.motiPoints,
   });
 
   factory ActivityEntity.fromModel(ActivityModel? model) {
@@ -59,6 +58,7 @@ class ActivityEntity extends Entity {
       type: ActivityTypeValueObject(model?.name),
       timestamp: TimestampValueObject(model?.date),
       amount: ActivityAmountEntity.fromModel(model?.amount),
+      motiPoints: MotiPointsValueObject.fromModel(model?.motiPoints),
     );
   }
 
@@ -67,47 +67,70 @@ class ActivityEntity extends Entity {
       type: ActivityTypeValueObject.invalid(),
       timestamp: TimestampValueObject.invalid(),
       amount: ActivityAmountEntity.invalid(),
+      motiPoints: MotiPointsValueObject.invalid(),
     );
   }
 
-  factory ActivityEntity.pushups(int amount) {
+  factory ActivityEntity.pushups({
+    required int reps,
+    required WeightEntity weight,
+    required HeightEntity height,
+  }) {
+    final type = ActivityTypeValueObject.pushups();
+    final amountEntity = ActivityAmountEntity(
+      amount: DoubleValueObject(reps.toDouble()),
+      type: AmountTypeValueObject.from(AmountType.reps),
+      unit: AmountUnitValueObject.from(AmountUnit.reps),
+    );
+
+    final motiPoints = MotiPointsValueObject(
+      weight: weight,
+      height: height,
+      activityType: type,
+      amount: amountEntity.amount,
+      amountType: amountEntity.type,
+      amountUnit: amountEntity.unit,
+    );
+
     return ActivityEntity._(
-      type: ActivityTypeValueObject.pushups(),
-      timestamp: TimestampValueObject(DateTime.now()),
-      amount: ActivityAmountEntity(
-        amount: DoubleValueObject(amount.toDouble()),
-        type: AmountTypeValueObject.from(AmountType.reps),
-        unit: AmountUnitValueObject.from(AmountUnit.reps),
-      ),
+      type: type,
+      timestamp: TimestampValueObject.now(),
+      amount: amountEntity,
+      motiPoints: motiPoints,
     );
   }
 
   ActivityModel toModel() {
     return ActivityModel(
       name: type.get.toValue(),
-      date: timestamp.value,
+      date: timestamp.getOrNull,
       amount: amount.toModel(),
+      motiPoints: motiPoints.getOrNull,
     );
   }
 
   final ActivityTypeValueObject type;
   final TimestampValueObject timestamp;
   final ActivityAmountEntity amount;
-
-  ActivityEntity operator +(ActivityEntity other) {
-    if (type != other.type || timestamp != other.timestamp) {
-      throw ArgumentError(
-        'Activities must have the same type and date to be added.',
-      );
-    }
-
-    return ActivityEntity._(
-      type: type,
-      timestamp: timestamp,
-      amount: amount + other.amount,
-    );
-  }
+  final MotiPointsValueObject motiPoints;
 
   @override
-  List<IValidable> get props => [type, timestamp, amount];
+  bool get valid => type.valid && timestamp.valid && amount.valid;
+
+  @override
+  List<IValidable> get props => [type, timestamp, amount, motiPoints];
+
+  ActivityEntity copyWith({
+    ActivityTypeValueObject? type,
+    TimestampValueObject? timestamp,
+    ActivityAmountEntity? amount,
+    MotiPointsValueObject? motiPoints,
+  }) {
+    return ActivityEntity._(
+      type: type ?? this.type,
+      timestamp: timestamp ?? this.timestamp,
+      amount: amount ?? this.amount,
+      motiPoints: motiPoints ?? this.motiPoints,
+    );
+  }
 }

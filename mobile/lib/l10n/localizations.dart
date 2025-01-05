@@ -302,6 +302,24 @@ abstract class AppLocalizations {
   /// **'Daily goal'**
   String get profile_daily_goal;
 
+  /// No description provided for @moti_index.
+  ///
+  /// In en, this message translates to:
+  /// **'Moti Index'**
+  String get moti_index;
+
+  /// No description provided for @moti_points.
+  ///
+  /// In en, this message translates to:
+  /// **'MT points'**
+  String get moti_points;
+
+  /// No description provided for @mt.
+  ///
+  /// In en, this message translates to:
+  /// **'MT'**
+  String get mt;
+
   /// No description provided for @reminders_reminder_title.
   ///
   /// In en, this message translates to:

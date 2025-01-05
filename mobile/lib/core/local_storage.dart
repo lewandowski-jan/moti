@@ -31,7 +31,7 @@ class LocalStorage {
     return null;
   }
 
-  Map<int, T> getAllWithKeys<T>(FromJson<T> fromJson) {
+  Map<dynamic, T> getAllWithKeys<T>(FromJson<T> fromJson) {
     return _box.toMap().map((key, value) {
       return MapEntry(key, fromJson(value));
     });
@@ -51,7 +51,7 @@ class LocalStorage {
     return fromJson(json);
   }
 
-  Future<void> update(int key, Model value) async {
+  Future<void> update(dynamic key, Model value) async {
     return _box.put(key, value.toJson());
   }
 

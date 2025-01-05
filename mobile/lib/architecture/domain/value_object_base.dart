@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:moti/architecture/domain/validable.dart';
 
 abstract class ValueObjectBase<T extends Object> extends Equatable
     implements IValidable {
+  @protected
   late final T? value;
 
   @override

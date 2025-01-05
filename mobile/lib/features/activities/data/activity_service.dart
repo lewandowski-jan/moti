@@ -10,7 +10,11 @@ class ActivityService {
     return _storage.add(activity);
   }
 
-  Map<int, ActivityModel> getAllActivities() {
+  Map<dynamic, ActivityModel> getAllActivities() {
     return _storage.getAllWithKeys(ActivityModel.fromJson);
+  }
+
+  Future<void> updateActivity(int key, ActivityModel model) {
+    return _storage.update(key, model);
   }
 }

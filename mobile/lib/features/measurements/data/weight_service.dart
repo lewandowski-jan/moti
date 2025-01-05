@@ -10,7 +10,7 @@ class WeightService {
     return _storage.add(measurement);
   }
 
-  Map<int, MeasurementModel> getAllWeights() {
+  Map<dynamic, MeasurementModel> getAllWeights() {
     return _storage.getAllWithKeys(MeasurementModel.fromJson);
   }
 

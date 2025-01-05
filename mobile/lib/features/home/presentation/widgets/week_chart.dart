@@ -97,8 +97,8 @@ class _WeekChartState extends State<WeekChart> {
     ).reversed;
     final titles = days
         .map(
-          (date) =>
-              DateFormat.E(context.locale.toLanguageTag()).format(date.value!),
+          (date) => DateFormat.E(context.locale.toLanguageTag())
+              .format(date.getOrNull!),
         )
         .toList();
 
@@ -126,41 +126,44 @@ class _WeekChartState extends State<WeekChart> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 160,
-      child: BarChart(
-        BarChartData(
-          barTouchData: BarTouchData(
-            touchTooltipData: BarTouchTooltipData(
-              getTooltipColor: (group) {
-                return context.colors.transparent;
-              },
-              getTooltipItem: (a, b, c, d) => null,
-            ),
-          ),
-          titlesData: FlTitlesData(
-            rightTitles: const AxisTitles(),
-            topTitles: const AxisTitles(),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: bottomTitles,
-                reservedSize: 42,
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: SizedBox(
+        height: 160,
+        child: BarChart(
+          BarChartData(
+            barTouchData: BarTouchData(
+              touchTooltipData: BarTouchTooltipData(
+                getTooltipColor: (group) {
+                  return context.colors.transparent;
+                },
+                getTooltipItem: (a, b, c, d) => null,
               ),
             ),
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                getTitlesWidget: leftTitles,
-                showTitles: true,
-                reservedSize: 36,
+            titlesData: FlTitlesData(
+              rightTitles: const AxisTitles(),
+              topTitles: const AxisTitles(),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: bottomTitles,
+                  reservedSize: 42,
+                ),
+              ),
+              leftTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  getTitlesWidget: leftTitles,
+                  showTitles: true,
+                  reservedSize: 36,
+                ),
               ),
             ),
+            borderData: FlBorderData(
+              show: false,
+            ),
+            barGroups: barGroups,
+            gridData: const FlGridData(show: false),
           ),
-          borderData: FlBorderData(
-            show: false,
-          ),
-          barGroups: barGroups,
-          gridData: const FlGridData(show: false),
         ),
       ),
     );
