@@ -21,13 +21,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'You have not done pushups today, who\'s gonna carry the logs?';
 
   @override
-  String get add_activity_add_pushups => 'Add pushups';
-
-  @override
   String get add_activity_amount => 'Amount';
 
   @override
-  String get add_activity_add => 'Add';
+  String get add_activity_add => 'Add activity';
 
   @override
   String get streak_streak => 'Streak';
@@ -118,6 +115,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mt => 'MT';
+
+  @override
+  String get tab_home => 'Home';
+
+  @override
+  String get tab_statistics => 'Statistics';
+
+  @override
+  String get tab_measurements => 'Measurements';
+
+  @override
+  String get activity_pushups => 'Pushups';
+
+  @override
+  String get activity_squats => 'Squats';
+
+  @override
+  String get activity_situps => 'Situps';
+
+  @override
+  String get activity_jumping_jacks => 'Jumping jacks';
+
+  @override
+  String get activity_burpees => 'Burpees';
+
+  @override
+  String get activity_amount_reps => 'Reps';
+
+  @override
+  String get add_activity_save => 'Save';
 
   @override
   String get reminders_reminder_title => 'Reminder';

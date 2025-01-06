@@ -103,13 +103,13 @@ class _ColorsDark extends MTColors {
   MTColor get primary => const MTColor._(0xFF1A73E8);
 
   @override
-  MTColor get primaryWeak => const MTColor._(0xFF5C8EDC);
+  MTColor get primaryWeak => const MTColor._(0xFF43609B);
 
   @override
   MTColor get secondary => const MTColor._(0xFFE91E63);
 
   @override
-  MTColor get secondaryWeak => const MTColor._(0xFFAD1457);
+  MTColor get secondaryWeak => const MTColor._(0xFF7E0F40);
 
   @override
   MTColor get success => const MTColor._(0xFF66BB6A);

@@ -7,46 +7,22 @@ part of 'routes.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
-      $homeRoute,
+      $settingsRoute,
+      $profileRoute,
+      $addActivityRoute,
+      $mainRoute,
     ];
 
-RouteBase get $homeRoute => GoRouteData.$route(
-      path: '/home',
-      factory: $HomeRouteExtension._fromState,
-      routes: [
-        GoRouteData.$route(
-          path: 'settings',
-          factory: $SettingsRouteExtension._fromState,
-        ),
-        GoRouteData.$route(
-          path: 'profile',
-          factory: $ProfileRouteExtension._fromState,
-        ),
-      ],
+RouteBase get $settingsRoute => GoRouteData.$route(
+      path: '/settings',
+      factory: $SettingsRouteExtension._fromState,
     );
-
-extension $HomeRouteExtension on HomeRoute {
-  static HomeRoute _fromState(GoRouterState state) => HomeRoute();
-
-  String get location => GoRouteData.$location(
-        '/home',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
 
 extension $SettingsRouteExtension on SettingsRoute {
   static SettingsRoute _fromState(GoRouterState state) => SettingsRoute();
 
   String get location => GoRouteData.$location(
-        '/home/settings',
+        '/settings',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -59,11 +35,16 @@ extension $SettingsRouteExtension on SettingsRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
+RouteBase get $profileRoute => GoRouteData.$route(
+      path: '/profile',
+      factory: $ProfileRouteExtension._fromState,
+    );
+
 extension $ProfileRouteExtension on ProfileRoute {
   static ProfileRoute _fromState(GoRouterState state) => ProfileRoute();
 
   String get location => GoRouteData.$location(
-        '/home/profile',
+        '/profile',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -74,4 +55,61 @@ extension $ProfileRouteExtension on ProfileRoute {
       context.pushReplacement(location);
 
   void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $addActivityRoute => GoRouteData.$route(
+      path: '/add-activity',
+      factory: $AddActivityRouteExtension._fromState,
+    );
+
+extension $AddActivityRouteExtension on AddActivityRoute {
+  static AddActivityRoute _fromState(GoRouterState state) => AddActivityRoute();
+
+  String get location => GoRouteData.$location(
+        '/add-activity',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+RouteBase get $mainRoute => GoRouteData.$route(
+      path: '/:tab',
+      factory: $MainRouteExtension._fromState,
+    );
+
+extension $MainRouteExtension on MainRoute {
+  static MainRoute _fromState(GoRouterState state) => MainRoute(
+        tab: _$TabsEnumMap._$fromName(state.pathParameters['tab']!),
+      );
+
+  String get location => GoRouteData.$location(
+        '/${Uri.encodeComponent(_$TabsEnumMap[tab]!)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+const _$TabsEnumMap = {
+  Tabs.home: 'home',
+  Tabs.statistics: 'statistics',
+  Tabs.measurements: 'measurements',
+};
+
+extension<T extends Enum> on Map<T, String> {
+  T _$fromName(String value) =>
+      entries.singleWhere((element) => element.value == value).key;
 }

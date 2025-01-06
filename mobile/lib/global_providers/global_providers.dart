@@ -19,6 +19,7 @@ import 'package:moti/features/reminders/local_notifications.dart';
 import 'package:moti/features/reminders/presentation/motivational_text_generator.dart';
 import 'package:moti/features/settings/language/language_cubit.dart';
 import 'package:moti/features/settings/theme/theme_cubit.dart';
+import 'package:moti/features/statistics/application/statistics_cubit.dart';
 import 'package:moti/l10n/localizations.dart';
 import 'package:moti/l10n/localizations_en.dart';
 import 'package:moti/l10n/localizations_pl.dart';
@@ -111,7 +112,12 @@ class MTGlobalProviders extends StatelessWidget {
           create: (context) => MotiIndexCubit(
             activitiesRepository: context.read(),
             profileRepository: context.read(),
-          )..reload(),
+          )..load(),
+        ),
+        BlocProvider<StatisticsCubit>(
+          create: (context) => StatisticsCubit(
+            activitiesRepository: context.read(),
+          )..load(),
         ),
       ],
       child: BlocConsumer<LanguageCubit, Locale?>(

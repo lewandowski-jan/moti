@@ -1,8 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_comms/flutter_comms.dart';
 import 'package:moti/features/activities/domain/activities_repository.dart';
+import 'package:moti/features/activities/domain/activity_amount_entity.dart';
 import 'package:moti/features/activities/domain/activity_entity.dart';
 import 'package:moti/features/activities/domain/activity_type_value_object.dart';
 import 'package:moti/features/common/domain/date_value_object.dart';
@@ -10,7 +10,7 @@ import 'package:moti/features/measurements/domain/weight_repository.dart';
 import 'package:moti/features/profile/domain/profile_repository.dart';
 import 'package:moti/features/statistics/domain/moti_points_value_object.dart';
 
-enum ActivitiesMessage { firstActivityLoggedToday }
+enum ActivitiesMessage { firstActivityLoggedToday, activityLogged }
 
 class ActivitiesCubit extends Cubit<ActivitiesState>
     with Sender<ActivitiesMessage> {
@@ -36,20 +36,12 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
       }
 
       final activityDates = activities.entities
-          .where((e) => e.type.get == ActivityType.pushups)
           .map((e) => e.timestamp.date)
           .where((e) => e.valid)
           .toList();
 
       final today = DateValueObject.today();
       final doneToday = activityDates.contains(today);
-
-      final weekAgo = today - const Duration(days: 7);
-      final lastWeekActivities = activities.entities
-          .where(
-            (e) => e.timestamp.date.isAfter(weekAgo),
-          )
-          .groupListsBy((e) => e.timestamp.date);
 
       final streak = activityDates.currentStreak;
       final maxStreak = activityDates.longestStreak;
@@ -65,7 +57,6 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
           totalMotiPoints: totalMotiPoints,
           totalMotiPointsToday: totalMotiPointsToday,
           doneToday: doneToday,
-          lastWeekActivities: lastWeekActivities,
         ),
       );
     } catch (e) {
@@ -73,15 +64,17 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
     }
   }
 
-  Future<bool> logPushups({
-    required int reps,
+  Future<bool> logActivity({
+    required ActivityTypeValueObject type,
+    required ActivityAmountEntity amount,
   }) async {
     final weight = weightRepository.getLastWeight();
     final height = profileRepository.getProfile().height;
 
     return _logActivity(
-      ActivityEntity.pushups(
-        reps: reps,
+      ActivityEntity.from(
+        type: type,
+        amount: amount,
         weight: weight,
         height: height,
       ),
@@ -89,6 +82,10 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
   }
 
   Future<bool> _logActivity(ActivityEntity activity) async {
+    if (!activity.valid) {
+      return false;
+    }
+
     try {
       await activitiesRepository.addActivity(activity);
 
@@ -96,6 +93,7 @@ class ActivitiesCubit extends Cubit<ActivitiesState>
         send(ActivitiesMessage.firstActivityLoggedToday);
       }
 
+      send(ActivitiesMessage.activityLogged);
       await fetchActivitiesData();
       return true;
     } catch (e) {
@@ -114,7 +112,6 @@ class ActivitiesState extends Equatable {
     required this.totalMotiPoints,
     required this.totalMotiPointsToday,
     required this.doneToday,
-    required this.lastWeekActivities,
   });
 
   factory ActivitiesState.initial() {
@@ -125,7 +122,6 @@ class ActivitiesState extends Equatable {
       totalMotiPoints: MotiPointsValueObject.invalid(),
       totalMotiPointsToday: MotiPointsValueObject.invalid(),
       doneToday: false,
-      lastWeekActivities: const {},
     );
   }
 
@@ -135,7 +131,6 @@ class ActivitiesState extends Equatable {
   final MotiPointsValueObject totalMotiPoints;
   final MotiPointsValueObject totalMotiPointsToday;
   final bool doneToday;
-  final Map<DateValueObject, List<ActivityEntity>> lastWeekActivities;
 
   ActivitiesState copyWith({
     ActivitiesStatus? status,
@@ -144,7 +139,6 @@ class ActivitiesState extends Equatable {
     MotiPointsValueObject? totalMotiPoints,
     MotiPointsValueObject? totalMotiPointsToday,
     bool? doneToday,
-    Map<DateValueObject, List<ActivityEntity>>? lastWeekActivities,
   }) {
     return ActivitiesState(
       status: status ?? this.status,
@@ -153,7 +147,6 @@ class ActivitiesState extends Equatable {
       totalMotiPoints: totalMotiPoints ?? this.totalMotiPoints,
       totalMotiPointsToday: totalMotiPointsToday ?? this.totalMotiPointsToday,
       doneToday: doneToday ?? this.doneToday,
-      lastWeekActivities: lastWeekActivities ?? this.lastWeekActivities,
     );
   }
 
@@ -165,6 +158,5 @@ class ActivitiesState extends Equatable {
         totalMotiPoints,
         totalMotiPointsToday,
         doneToday,
-        lastWeekActivities,
       ];
 }

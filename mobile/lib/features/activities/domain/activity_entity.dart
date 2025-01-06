@@ -5,9 +5,6 @@ import 'package:moti/architecture/domain/validable.dart';
 import 'package:moti/features/activities/data/models/activity_model.dart';
 import 'package:moti/features/activities/domain/activity_amount_entity.dart';
 import 'package:moti/features/activities/domain/activity_type_value_object.dart';
-import 'package:moti/features/activities/domain/amount_type_value_object.dart';
-import 'package:moti/features/activities/domain/amount_unit_value_object.dart';
-import 'package:moti/features/common/domain/double_value_object.dart';
 import 'package:moti/features/common/domain/timestamp_value_object.dart';
 import 'package:moti/features/measurements/domain/height_entity.dart';
 import 'package:moti/features/measurements/domain/weight_entity.dart';
@@ -71,31 +68,25 @@ class ActivityEntity extends Entity {
     );
   }
 
-  factory ActivityEntity.pushups({
-    required int reps,
+  factory ActivityEntity.from({
+    required ActivityTypeValueObject type,
+    required ActivityAmountEntity amount,
     required WeightEntity weight,
     required HeightEntity height,
   }) {
-    final type = ActivityTypeValueObject.pushups();
-    final amountEntity = ActivityAmountEntity(
-      amount: DoubleValueObject(reps.toDouble()),
-      type: AmountTypeValueObject.from(AmountType.reps),
-      unit: AmountUnitValueObject.from(AmountUnit.reps),
-    );
-
     final motiPoints = MotiPointsValueObject(
       weight: weight,
       height: height,
       activityType: type,
-      amount: amountEntity.amount,
-      amountType: amountEntity.type,
-      amountUnit: amountEntity.unit,
+      amount: amount.amount,
+      amountType: amount.type,
+      amountUnit: amount.unit,
     );
 
     return ActivityEntity._(
       type: type,
       timestamp: TimestampValueObject.now(),
-      amount: amountEntity,
+      amount: amount,
       motiPoints: motiPoints,
     );
   }
