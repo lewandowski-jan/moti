@@ -25,7 +25,7 @@ class HomeScreen extends HookWidget {
       () {
         context.read<LocalNotifications>().requestPermission();
         context.read<ActivitiesCubit>().fetchActivitiesData();
-        context.read<MotiIndexCubit>().reload();
+        context.read<MotiIndexCubit>().load();
         return null;
       },
       [],
@@ -53,18 +53,19 @@ class HomeScreen extends HookWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
         leading: IconButton.filled(
-          onPressed: () => ProfileRoute().go(context),
+          onPressed: () => ProfileRoute().push(context),
           style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(context.colors.primary),
+            backgroundColor: WidgetStatePropertyAll(context.colors.primaryWeak),
           ),
           color: context.colors.white,
           icon: const Icon(Icons.person),
         ),
         actions: [
           IconButton.filled(
-            onPressed: () => SettingsRoute().go(context),
+            onPressed: () => SettingsRoute().push(context),
             style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(context.colors.primary),
+              backgroundColor:
+                  WidgetStatePropertyAll(context.colors.primaryWeak),
             ),
             color: context.colors.white,
             icon: const Icon(Icons.settings),
@@ -116,17 +117,13 @@ class HomeBody extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 48),
+                  const AddActivity(),
+                  const SizedBox(height: 24),
                   SummaryStats(
                     totalToday: totalToday,
                     total: total,
                     streak: streak,
                     maxStreak: maxStreak,
-                  ),
-                  const SizedBox(height: 40),
-                  AddActivity(
-                    onAdd: (reps) => context.read<ActivitiesCubit>().logPushups(
-                          reps: reps,
-                        ),
                   ),
                 ],
               ),

@@ -5,7 +5,7 @@ class MTRouter {
   MTRouter();
 
   late final GoRouter router = GoRouter(
-    initialLocation: HomeRoute().location,
+    initialLocation: MainRoute(tab: Tabs.home).location,
     routes: $appRoutes,
   );
 

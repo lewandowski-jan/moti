@@ -122,12 +122,6 @@ abstract class AppLocalizations {
   /// **'You have not done pushups today, who\'s gonna carry the logs?'**
   String get activity_screen_pushups_not_done;
 
-  /// No description provided for @add_activity_add_pushups.
-  ///
-  /// In en, this message translates to:
-  /// **'Add pushups'**
-  String get add_activity_add_pushups;
-
   /// No description provided for @add_activity_amount.
   ///
   /// In en, this message translates to:
@@ -137,7 +131,7 @@ abstract class AppLocalizations {
   /// No description provided for @add_activity_add.
   ///
   /// In en, this message translates to:
-  /// **'Add'**
+  /// **'Add activity'**
   String get add_activity_add;
 
   /// No description provided for @streak_streak.
@@ -319,6 +313,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'MT'**
   String get mt;
+
+  /// No description provided for @tab_home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get tab_home;
+
+  /// No description provided for @tab_statistics.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get tab_statistics;
+
+  /// No description provided for @tab_measurements.
+  ///
+  /// In en, this message translates to:
+  /// **'Measurements'**
+  String get tab_measurements;
+
+  /// No description provided for @activity_pushups.
+  ///
+  /// In en, this message translates to:
+  /// **'Pushups'**
+  String get activity_pushups;
+
+  /// No description provided for @activity_squats.
+  ///
+  /// In en, this message translates to:
+  /// **'Squats'**
+  String get activity_squats;
+
+  /// No description provided for @activity_situps.
+  ///
+  /// In en, this message translates to:
+  /// **'Situps'**
+  String get activity_situps;
+
+  /// No description provided for @activity_jumping_jacks.
+  ///
+  /// In en, this message translates to:
+  /// **'Jumping jacks'**
+  String get activity_jumping_jacks;
+
+  /// No description provided for @activity_burpees.
+  ///
+  /// In en, this message translates to:
+  /// **'Burpees'**
+  String get activity_burpees;
+
+  /// No description provided for @activity_amount_reps.
+  ///
+  /// In en, this message translates to:
+  /// **'Reps'**
+  String get activity_amount_reps;
+
+  /// No description provided for @add_activity_save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get add_activity_save;
 
   /// No description provided for @reminders_reminder_title.
   ///
