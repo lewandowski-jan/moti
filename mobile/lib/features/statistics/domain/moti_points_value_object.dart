@@ -14,6 +14,9 @@ extension ActivityTypeX on ActivityTypeValueObject {
       ActivityType.squats => 0.7,
       ActivityType.burpees => 0.8,
       ActivityType.jumpingJacks => 0.5,
+      ActivityType.lunges => 0.7,
+      ActivityType.calfRaises => 0.9,
+      ActivityType.benchDips => 0.75,
       ActivityType.invalid => 0,
     };
   }
@@ -25,6 +28,9 @@ extension ActivityTypeX on ActivityTypeValueObject {
       ActivityType.squats => 0.4,
       ActivityType.burpees => 0.7,
       ActivityType.jumpingJacks => 0.3,
+      ActivityType.lunges => 0.5,
+      ActivityType.calfRaises => 0.1,
+      ActivityType.benchDips => 0.4,
       ActivityType.invalid => 0,
     };
   }

@@ -10,6 +10,9 @@ enum ActivityType {
   situps,
   jumpingJacks,
   burpees,
+  calfRaises,
+  benchDips,
+  lunges,
   invalid;
 
   static const _mapping = {
@@ -18,6 +21,9 @@ enum ActivityType {
     '3': ActivityType.situps,
     '4': ActivityType.jumpingJacks,
     '5': ActivityType.burpees,
+    '6': ActivityType.calfRaises,
+    '7': ActivityType.lunges,
+    '8': ActivityType.benchDips,
     // legacy values
     'Pushups': ActivityType.pushups,
     'ActivityType.pushups': ActivityType.pushups,
@@ -51,6 +57,9 @@ class ActivityTypeValueObject
       ActivityType.situps => l10n.activity_situps,
       ActivityType.jumpingJacks => l10n.activity_jumping_jacks,
       ActivityType.burpees => l10n.activity_burpees,
+      ActivityType.lunges => l10n.activity_lunges,
+      ActivityType.calfRaises => l10n.activity_calf_raises,
+      ActivityType.benchDips => l10n.activity_bench_dips,
       ActivityType.invalid => '',
     };
   }
