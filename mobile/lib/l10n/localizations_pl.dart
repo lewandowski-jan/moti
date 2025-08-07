@@ -144,6 +144,15 @@ class AppLocalizationsPl extends AppLocalizations {
   String get activity_amount_reps => 'Powtórzenia';
 
   @override
+  String get activity_calf_raises => 'Wspięcia na palce';
+
+  @override
+  String get activity_lunges => 'Wykroki';
+
+  @override
+  String get activity_bench_dips => 'Dipy na ławce';
+
+  @override
   String get add_activity_save => 'Zapisz';
 
   @override

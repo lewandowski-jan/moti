@@ -368,6 +368,24 @@ abstract class AppLocalizations {
   /// **'Reps'**
   String get activity_amount_reps;
 
+  /// No description provided for @activity_calf_raises.
+  ///
+  /// In en, this message translates to:
+  /// **'Calf raises'**
+  String get activity_calf_raises;
+
+  /// No description provided for @activity_lunges.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunges'**
+  String get activity_lunges;
+
+  /// No description provided for @activity_bench_dips.
+  ///
+  /// In en, this message translates to:
+  /// **'Bench dips'**
+  String get activity_bench_dips;
+
   /// No description provided for @add_activity_save.
   ///
   /// In en, this message translates to:

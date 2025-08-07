@@ -144,6 +144,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get activity_amount_reps => 'Reps';
 
   @override
+  String get activity_calf_raises => 'Calf raises';
+
+  @override
+  String get activity_lunges => 'Lunges';
+
+  @override
+  String get activity_bench_dips => 'Bench dips';
+
+  @override
   String get add_activity_save => 'Save';
 
   @override
